@@ -11,21 +11,22 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 /**
  *
  * @author UTFPR
  */
-public class PessoaDaoDerby implements Dao {
+public class PessoaDaoDerby implements Dao{
 
     Statement stmt;
 
     //Quando contruir  a classe, conectar em um banco
     public PessoaDaoDerby() {
-        String username = "cismoski";
+        String username = "utf";
         String password = "123";
-        String url = "jdbc:derby://localhost:1527/MeuBancoDeDados";
+        String url = "jdbc:derby://localhost:1527/MeuBanco";
 
         // depois mandar conectar
         try {
@@ -40,7 +41,7 @@ public class PessoaDaoDerby implements Dao {
 
     @Override
     public void adicionar(Pessoa p) {
-       String instrucao = "INSERT INTO PESSOA (NOME,SOBRENOME,IDADE,CODIGO) VALUES(" + "\'" + p.getNome() + "\'" + "," + "\'" + p.getSobrenome() + "\'" + "," + p.getIdade() + "," + p.getCodigo() + ")";
+       String instrucao = "INSERT INTO PESSOA (NOME,SOBRENOME,IDADE,ID) VALUES(" + "\'" + p.getNome() + "\'" + "," + "\'" + p.getSobrenome() + "\'" + ","+ "\'" + p.getIdade() +"\'" + "," + p.getCodigo() + ")";
        
         System.out.println(instrucao);
        try{
@@ -66,22 +67,29 @@ public class PessoaDaoDerby implements Dao {
         System.out.println("Dado removido.");
     }
 
-    @Override
-    public void listarTudo() {
+   @Override
+    public ArrayList<Pessoa> listarTudo() {
         
         String instrucao = "SELECT * FROM PESSOA";
+        ArrayList<Pessoa> pessoas = new ArrayList<>();
         // Fazer array pra nome, idade e sobrenome.
         try{
-           
-        ResultSet rs = stmt.executeQuery(instrucao);
-        while(rs.next()){
-            System.out.println("Nome: " + rs.getString("NOME") + " Sobrenome: " + rs.getString("SOBRENOME") + " Idade: " + rs.getString("IDADE") + "Codigo: " + rs.getString("CODIGO"));
-            
+            ResultSet rs = stmt.executeQuery(instrucao);
+            while(rs.next()){
+                String nome = rs.getString("NOME"); 
+                String sobrenome = rs.getString("SOBRENOME");
+                String idade =  rs.getString("IDADE");
+                int id = rs.getInt("ID");   
+                Pessoa pessoa = new Pessoa(nome, sobrenome, idade, id);
+                pessoas.add(pessoa);
         }  
        }catch(SQLException se){
            System.out.println("Mensagem: " + se.getMessage());
        }
+       return pessoas;
     }
- }
+    
+}
+ 
 
 

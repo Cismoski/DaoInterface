@@ -7,12 +7,13 @@
 
 import br.edu.utfpr.dao.Dao;
 import br.edu.utfpr.modelo.Pessoa;
+import java.util.ArrayList;
 
 /**
  *
  * @author UTFPR
  */
-public class PessoaDaoVetor implements Dao{
+public class PessoaDaoVetor{
 
     private Pessoa lista[];
     private int i;
@@ -23,7 +24,7 @@ public class PessoaDaoVetor implements Dao{
        this.i = i;
     }
     
-    @Override
+    
     public void adicionar(Pessoa p) {
           if(i <= 5){
              lista[i] = p; 
@@ -32,7 +33,7 @@ public class PessoaDaoVetor implements Dao{
         }
     }
 
-    @Override
+    
     public void remover(Pessoa p) {
       // arrumar o remover
         
@@ -47,16 +48,7 @@ public class PessoaDaoVetor implements Dao{
             }            
         }
         
-        
+      
     }
-
-    @Override
-    public void listarTudo() {
-            for(int cont=0;cont<i;cont++){
-                if(lista[cont] != null){
-                     System.out.println(lista[cont]);
-                }
-            }
     
-    }
 }
